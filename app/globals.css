@@ -43,6 +43,11 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+@theme{
+  --font-bebas: 'Bebas Neue', sans-serif;
+  --font-IBM-Plex: 'IBM Plex Sans', sans-serif;
+ }
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

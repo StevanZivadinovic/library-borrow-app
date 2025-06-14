@@ -1,5 +1,6 @@
 'use client'
 import { cn } from '@/lib/utils'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
@@ -8,7 +9,9 @@ export const Header = () => {
     const pathname = usePathname();
   return (
     <header className='my-10 flex justify-between gap-5'>
-<Link href="/" className='text-2xl font-bold'>BookWise</Link>
+<Link href="/" className='text-2xl font-bold flex'>
+<Image src={'./icons/logo.svg'} alt='logo' width={40} height={40}></Image>
+BookWise</Link>
 <ul className='flex flex-row items-center gap-8'>
     <li>
         <Link

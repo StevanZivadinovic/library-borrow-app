@@ -52,6 +52,7 @@
  }
 
 :root {
+  --basic-cream:#EED1AC;
   --basic-green:#3d8959;
   --basic-dark:#060813;
   --radius: 0.625rem;

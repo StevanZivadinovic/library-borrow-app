@@ -3,6 +3,7 @@ import { BookCoverType, variantStyles } from "@/types/types";
 import Image from "next/image";
 
 import React from "react";
+import BookCoverSvg from "./BookCoverSvg";
 
 
 
@@ -16,20 +17,20 @@ export const BookCover = ({
   return <div
   className={
   cn(
-    "relative transition-all duration-300",
+    "relative",
     variantStyles[variant],
     className,
   )}
   >
-    Book Side Svg
-    <div className="absolute z-10" style={{left:'12%', width:'87.5%', height:'100%'}}>
+    <BookCoverSvg coverColor={coverColor}/>
+    <div className="relative  z-100" style={{left:'12%', width:'87.5%', height:'85%'}}>
 
   <Image
   src={coverImage}
   alt="Book cover"
-  fill
-  className="rounded-sm object-fill"
-
+  width={180}
+  height={250}
+  className="rounded-sm rounded-bl-none rounded-tl-none h-[90%] w-[80%]"
   />
   
 

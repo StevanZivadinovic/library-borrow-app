@@ -5,10 +5,10 @@ import { sampleBooks } from "@/constants";
 
 export default function Home() {
   return    <>
-  <BookOverview {...sampleBooks[0]}/>
+  <BookOverview {...sampleBooks[3]}/>
   <BookList
-  title={"Latest Books"}
+  title={"Popular Books"}
   books={sampleBooks}
   containerClassName={'mt-28'}  />
-  </>
+  </> 
 }

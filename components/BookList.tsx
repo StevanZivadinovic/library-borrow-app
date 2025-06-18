@@ -13,7 +13,7 @@ const BookList = ({ title, books, containerClassName }: bookListType) => {
     {books.map((book) => (
       <div key={book.id} className="book-card">
         <img src={book.cover} alt={book.title} className="w-full h-auto" />
-        <h3 className="text-xl font-semibold">{book.title}</h3>
+        <h3 className="text-xl font-semibold mt-2.5">{book.title}</h3>
         <p className="text-gray-500">{book.genre}</p>
       </div>
     ))}

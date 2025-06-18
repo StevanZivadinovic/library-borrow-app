@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} antialiased font-IBM-Plex bg-[var(--basic-dark)]`}
+        className={`${geistSans.variable} antialiased font-IBM-Plex bg-[var(--basic-dark)] text-white`}
       >
         {children}
       </body>

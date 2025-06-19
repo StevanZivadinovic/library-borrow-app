@@ -12,5 +12,6 @@ interface BookType {
   video:string;
   summary:string;
   isLoandedBook?: boolean;
+  isBorrowed?: boolean;
 
 }

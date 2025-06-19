@@ -171,6 +171,7 @@ export const sampleBooks = [
     video: "/sample-video.mp4?updatedAt=1722593504152",
     summary:
       "A timeless guide for developers to hone their skills and improve their programming practices.",
+      isBorrowed : true,
   },
   {
     id: 8,

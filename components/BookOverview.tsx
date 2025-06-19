@@ -15,7 +15,7 @@ const BookOverview = ({
   cover,
 }:BookType) => {
   return (
-    <section className="book-overview flex">
+    <section className="book-overview flex flex-col sm:flex-row!">
       <div className="flex flex-1 flex-col gap-5">
         <h1 className=" text-5xl">{title}</h1>
 

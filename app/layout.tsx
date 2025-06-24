@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Geist, IBM_Plex_Sans } from "next/font/google";
+import {  Geist } from "next/font/google";
 import "./globals.css";
 
 

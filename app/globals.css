@@ -3,6 +3,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -52,6 +53,10 @@
  }
 
 :root {
+  /* background: linear-gradient(180deg, #12141D 0%, #12151F 100%); */
+  -gradiend-dark-form-one:#12141D;
+  -gradiend-dark-form-two:#12151F;
+  --basic-gray: #D6E0FF;
   --basic-cream:#EED1AC;
   --basic-green:#3d8959;
   --basic-dark:#060813;
@@ -131,3 +136,4 @@
     @apply bg-background text-foreground;
   }
 }
+

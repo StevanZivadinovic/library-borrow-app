@@ -6,7 +6,7 @@ const Layout = ({children}: {children: ReactNode}) => {
     <main className="auth-container flex">
 <section className='auth-form max-w-[50%] p-[40px] mt-[10vh] mx-[5vw] bg-gradient-to-b
  from-[#12141D] to-[#12151F] rounded-lg '>
-<div className="auth-box w-[80%]">
+<div className="auth-box w-[90%] p-5">
   <div className="flex flex-row gap-3">
     <Image src={'icons/logo.svg'} alt='logo' width={37} height={37}></Image>
     <h1 className='text-2xl font-semibold text-white'>BookWise</h1>

@@ -54,10 +54,12 @@
 
 :root {
   /* background: linear-gradient(180deg, #12141D 0%, #12151F 100%); */
-  -gradiend-dark-form-one:#12141D;
-  -gradiend-dark-form-two:#12151F;
+  --gradiend-dark-form-one:#12141D;
+  --gradiend-dark-form-two:#12151F;
+  --basic-dark-form-three: #14171C;
   --basic-gray: #D6E0FF;
   --basic-cream:#EED1AC;
+  --basic-cream-second: #E7C9A5;
   --basic-green:#3d8959;
   --basic-dark:#060813;
   --basic-native: #232839;

@@ -5,7 +5,6 @@ import { z } from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -13,7 +12,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
-import { FIELD_NAMES } from "@/constants";
+import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
+import ImageInput from "./ImageInput";
+import Link from "next/link";
 interface Props<T extends FieldValues> {
   type: "sign-in" | "log-in";
   schema: z.ZodType<T, any, T>;
@@ -47,16 +48,21 @@ const AuthForm = <T extends FieldValues>({
                 control={form.control}
                 name={key as Path<T>}
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="-mt-1">
                     <FormLabel className="text-[var(--basic-gray)]">
                       {FIELD_NAMES[key as keyof typeof FIELD_NAMES] || key}
                     </FormLabel>
                     <FormControl className="bg-[var(--basic-native)]">
-                      <Input
+                      {
+                        field?.name !== "universityCard" ?  <Input
+                        required
+                      type={FIELD_TYPES[key as keyof typeof FIELD_TYPES] || key}
                         placeholder={`Type your ${key}..`}
                         {...field}
-                        className="font-bold p-5"
-                      />
+                        className="font-bold p-5 mt-1"
+                      />:<ImageInput/>
+                      }
+                    
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -65,7 +71,11 @@ const AuthForm = <T extends FieldValues>({
             )
           })}
          
-          <Button type="submit">Submit</Button>
+          <Button type="submit" className="font-bold text-[var(--basic-dark-form-three)] cursor-pointer hover:bg-[var(--basic-cream-second)] bg-[var(--basic-gray)] w-full  py-5">{type==='sign-in' ? 'Sign in' : 'Log in'}</Button>
+        {type==='sign-in' ? 
+        <p>Have an Account already? <Link href={'/log-in'}>Login</Link></p> :
+      <p>Don't have an account already?  <Link href={'/sign-in'} className="font-bold text-[var(--basic-cream-second)]">Register here</Link> </p>
+      }
         </form>
       </Form>
     </div>

@@ -24,7 +24,6 @@ const SignInPage = () => {
           password: "",
           universityCard: "",
         }}
-        onSubmit={(data)=>{console.log(data)}}
       />
     </div>
   );

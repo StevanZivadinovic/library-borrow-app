@@ -19,15 +19,11 @@ interface Props<T extends FieldValues> {
   type: "sign-in" | "log-in";
   schema: z.ZodType<T, any, T>;
   defaultValues: DefaultValues<T>;
-  onSubmit: (data: any) => void;
-  //data:FieldValues
-  // Promise<{success: boolean, error?:string} >
 }
 const AuthForm = <T extends FieldValues>({
   type,
   schema,
   defaultValues,
-  onSubmit,
 }: Props<T>) => {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -35,12 +31,18 @@ const AuthForm = <T extends FieldValues>({
   });
 
   const handleOnSubmit = (values: z.infer<typeof schema>) => {
-    console.log(values);
+    
+    try{
+      console.log(values);
+       form.reset();
+    }catch(error){
+      console.error("Error submitting form:", error);
+    }
   };
   return (
     <div className="mt-[40px]">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(handleOnSubmit)} className="space-y-8">
           {Object.keys(defaultValues).map((key,i)=>{
             return(
               <FormField
@@ -60,7 +62,9 @@ const AuthForm = <T extends FieldValues>({
                         placeholder={`Type your ${key}..`}
                         {...field}
                         className="font-bold p-5 mt-1"
-                      />:<ImageInput/>
+                      />:<ImageInput 
+                       value={field.value}            
+                        onChange={field.onChange}/>      
                       }
                     
                     </FormControl>

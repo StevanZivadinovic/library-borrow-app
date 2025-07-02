@@ -20,7 +20,6 @@ import React from 'react'
           email: "",
           password: "",
         }}
-        onSubmit={(data)=>{console.log(data)}}
       />
     </div>
   )

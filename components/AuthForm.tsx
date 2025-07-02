@@ -73,8 +73,8 @@ const AuthForm = <T extends FieldValues>({
          
           <Button type="submit" className="font-bold text-[var(--basic-dark-form-three)] cursor-pointer hover:bg-[var(--basic-cream-second)] bg-[var(--basic-gray)] w-full  py-5">{type==='sign-in' ? 'Sign in' : 'Log in'}</Button>
         {type==='sign-in' ? 
-        <p>Have an Account already? <Link href={'/log-in'}>Login</Link></p> :
-      <p>Don't have an account already?  <Link href={'/sign-in'} className="font-bold text-[var(--basic-cream-second)]">Register here</Link> </p>
+        <p className="text-center font-IBM-Plex font-medium text-[var(--basic-gray)]">Have an Account already? <Link href={'/log-in'} className="font-semibold text-[var(--basic-cream-second)]">Login</Link></p> :
+      <p className="text-center font-IBM-Plex font-medium text-[var(--basic-gray)]">Don't have an account already?  <Link href={'/sign-in'} className="font-semibold text-[var(--basic-cream-second)]">Register here</Link> </p>
       }
         </form>
       </Form>

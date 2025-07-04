@@ -1,9 +1,13 @@
 import BookList from "@/components/BookList";
 import BookOverview from "@/components/BookOverview";
 import { sampleBooks } from "@/constants";
+import { db } from "@/database/drizzle";
+import { users } from "@/database/schema";
 import 'dotenv/config'
 
-export default function Home() {
+const Home=async () =>{
+  const result = await db.select().from(users);
+  console.log("Users:", result);
   return    <>
   <BookOverview {...sampleBooks[3]}/>
   <BookList
@@ -12,3 +16,5 @@ export default function Home() {
   containerClassName={'mt-28'}  />
   </> 
 }
+
+export default Home;

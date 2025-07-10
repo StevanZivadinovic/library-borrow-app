@@ -3,7 +3,7 @@ import { z } from "zod";
 export const signInSchema = z.object({
   fullName: z.string().min(3),
   email: z.string().email(),
-  universityId: z.coerce.number(),
+  universityId: z.coerce.number().int().min(100_000_000).max(999_999_999),
   universityCard: z.string().nonempty("University Card is required"),
   password: z.string().min(8),
 });

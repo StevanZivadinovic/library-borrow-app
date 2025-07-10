@@ -1,10 +1,10 @@
-import config from "@/config";
-import { drizzle } from "drizzle-orm/neon-http";
-import { neon } from "@neondatabase/serverless";
 import * as dotenv from "dotenv";
 dotenv.config({
     path: ".env.local",
 });
+import config from "@/config";
+import { drizzle } from "drizzle-orm/neon-http";
+import { neon } from "@neondatabase/serverless";
 console.log("Database URL:", config.env.databaseUrl);
 const sql = neon(config.env.databaseUrl);
 

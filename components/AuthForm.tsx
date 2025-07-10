@@ -15,6 +15,8 @@ import { Button } from "./ui/button";
 import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
 import ImageInput from "./ImageInput";
 import Link from "next/link";
+import signUpLogicSubmit from "@/database/signUpLogic";
+import { logInSchema, signInSchema } from "@/lib/validations";
 interface Props<T extends FieldValues> {
   type: "sign-in" | "log-in";
   schema: z.ZodType<T, any, T>;
@@ -31,13 +33,17 @@ const AuthForm = <T extends FieldValues>({
   });
 
   const handleOnSubmit = (values: z.infer<typeof schema>) => {
-    
-    try{
-      console.log(values);
-       form.reset();
-    }catch(error){
-      console.error("Error submitting form:", error);
+    if(type === 'sign-in'){
+      signUpLogicSubmit(values as unknown as z.infer<typeof signInSchema>)
+      try{
+        console.log(typeof values);
+         form.reset();
+      }catch(error){
+        console.error("Error submitting form:", error);
+      }
+    }else if(type === 'log-in'){
     }
+    
   };
   return (
     <div className="mt-[40px]">

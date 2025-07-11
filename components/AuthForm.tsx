@@ -16,7 +16,9 @@ import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
 import ImageInput from "./ImageInput";
 import Link from "next/link";
 import signUpLogicSubmit from "@/database/signUpLogic";
-import { logInSchema, signInSchema } from "@/lib/validations";
+import { signInSchema } from "@/lib/validations";
+import { signIn } from "next-auth/react";
+
 interface Props<T extends FieldValues> {
   type: "sign-in" | "log-in";
   schema: z.ZodType<T, any, T>;
@@ -32,9 +34,9 @@ const AuthForm = <T extends FieldValues>({
     defaultValues: defaultValues as DefaultValues<T>,
   });
 
-  const handleOnSubmit = (values: z.infer<typeof schema>) => {
+  const handleOnSubmit =async  (values: z.infer<typeof schema>) => {
     if(type === 'sign-in'){
-      signUpLogicSubmit(values as unknown as z.infer<typeof signInSchema>)
+     await signUpLogicSubmit(values as unknown as z.infer<typeof signInSchema>)
       try{
         console.log(typeof values);
          form.reset();
@@ -42,6 +44,26 @@ const AuthForm = <T extends FieldValues>({
         console.error("Error submitting form:", error);
       }
     }else if(type === 'log-in'){
+
+      
+        try{
+           const res = await signIn("credentials", {
+      email: values.email,
+      password: values.password,
+      redirect: false, 
+      callbackUrl: "/", 
+    });
+//@ts-ignore
+    if (res) {
+//@ts-ignore
+      console.log("Login failed:", res);
+    }
+        }
+
+        catch(error){
+          console.error("Error logging in:", error);
+        }
+        
     }
     
   };

@@ -1,47 +1,60 @@
-import NextAuth, { User } from "next-auth";
-import { compare } from "bcryptjs";
+// auth.ts
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { db } from "@/database/drizzle";
-import { users } from "@/database/schema";
-import { eq } from "drizzle-orm";
+
 export const runtime = "nodejs";
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
     strategy: "jwt",
   },
   providers: [
     CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
 
-        // const user = await db
-        //   .select()
-        //   .from(users)
-        //   .where(eq(users.email, credentials.email.toString()))
-        //   .limit(1);
+        // Pozovi lokalnu API rutu da proveriš login
+        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: credentials.email,
+            password: credentials.password,
+          }),
+        });
 
-        // if (user.length === 0) return null;
+        if (!res.ok) {
+          console.error("Login failed:", res.statusText);
+          return null;
+        }
 
-        // const isPasswordValid = await compare(
-        //   credentials.password.toString(),
-        //   user[0].password,
-        // );
+        const data = await res.json();
 
-        // if (!isPasswordValid) return null;
+        if (!data.user) {
+          console.error("No user found in response:", data);
+          return null;
+        }
 
-        // return {
-        //   id: user[0].id.toString(),
-        //   email: user[0].email,
-        //   name: user[0].fullName,
-        // } as User;
-        return null
+        return {
+          id: data.user.id.toString(),
+          email: data.user.email,
+          name: data.user.fullName || data.user.name,
+        };
       },
     }),
   ],
   pages: {
     signIn: "/log-in",
+     error: "error", 
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -49,15 +62,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.id = user.id;
         token.name = user.name;
       }
-
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id as string;
-        session.user.name = token.name as string;
+        //@ts-ignore
+        session.user.id = token.id;
+        session.user.name = token.name;
       }
-
       return session;
     },
   },

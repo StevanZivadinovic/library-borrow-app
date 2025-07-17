@@ -1,8 +1,12 @@
 // auth.ts
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
 
-export const runtime = "nodejs";
+import { compare } from "bcryptjs";
+import NextAuth, { User } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { db } from "./database/drizzle";
+import { users } from "./database/schema";
+import { eq } from "drizzle-orm";
+
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
@@ -19,8 +23,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
-
-        // Pozovi lokalnu API rutu da proveriš login
+    
+      
         const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/login`, {
           method: "POST",
           headers: {
@@ -54,7 +58,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   pages: {
     signIn: "/log-in",
-     error: "error", 
   },
   callbacks: {
     async jwt({ token, user }) {

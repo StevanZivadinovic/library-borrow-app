@@ -7,7 +7,6 @@ import { hash } from "bcryptjs";
 import { signIn } from "@/auth";
 import { headers } from "next/headers";
 // import ratelimit from "@/lib/ratelimit";
-import { redirect } from "next/navigation";
 // import { workflowClient } from "@/lib/workflow";
 // import config from "@/lib/config";
 
@@ -26,7 +25,8 @@ console.log("Signing in with credentials:", { email, password });
       email,
       password,
       redirect: false,
-    });
+    //   callbackUrl: "/",
+    }) as { error?: string; user?: any };
 
     if (result?.error) {
       return { success: false, error: result.error };

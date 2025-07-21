@@ -1,8 +1,16 @@
+
+import { auth } from '@/auth';
 import Image from 'next/image'
+import { redirect } from 'next/navigation';
 import React, { ReactNode } from 'react'
 
-const Layout = ({children}: {children: ReactNode}) => {
+const Layout =async  ({children}: {children: ReactNode}) => {
+    const session = await auth();
+  if (session?.user) {
+    redirect("/");
+  }
   return (
+   
     <main className="auth-container flex">
 <section className='auth-form max-w-[50%] p-[40px] mt-[10vh] mx-[5vw] bg-gradient-to-b
  from-[var(--gradiend-dark-form-one)] to-[var(--gradiend-dark-form-two)] rounded-lg '>
@@ -16,6 +24,7 @@ const Layout = ({children}: {children: ReactNode}) => {
 </section>
 <section className='auth-illustration w-[50%]'>
   <Image
+  priority={true}
   src={'/images/auth-illustration.png'}
   alt='auth-illustration'
   width={1000}
@@ -24,6 +33,7 @@ const Layout = ({children}: {children: ReactNode}) => {
   ></Image>
 </section>
     </main>
+    
   )
 }
 

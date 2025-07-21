@@ -1,12 +1,6 @@
 // auth.ts
-
-import { compare } from "bcryptjs";
 import NextAuth, { User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { db } from "./database/drizzle";
-import { users } from "./database/schema";
-import { eq } from "drizzle-orm";
-
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
@@ -19,12 +13,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(credentials, auth) {
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
-    
-      
+        console.log(auth);
         const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/login`, {
           method: "POST",
           headers: {

@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
 import { hash } from "bcryptjs";
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { headers } from "next/headers";
 // import ratelimit from "@/lib/ratelimit";
 // import { workflowClient } from "@/lib/workflow";
@@ -25,7 +25,6 @@ console.log("Signing in with credentials:", { email, password });
       email,
       password,
       redirect: false,
-    //   callbackUrl: "/",
     }) as { error?: string; user?: any };
 
     if (result?.error) {
@@ -84,3 +83,13 @@ export const signUp = async (params: AuthCredentials) => {
     return { success: false, error: "Signup error" };
   }
 };
+
+export const signOutFunc= async () => {
+  try {
+    await signOut({ redirect: true, redirectTo: "/login" });
+    return { success: true };
+  } catch (error) {
+    console.error("Sign out error:", error);
+    return { success: false, error: "Sign out error" };
+  }
+}

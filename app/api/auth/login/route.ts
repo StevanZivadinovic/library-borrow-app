@@ -2,7 +2,7 @@ import importDbUsers from '@/database/importDbUsers';
 import { NextRequest, NextResponse } from 'next/server';
 
 
-export const runtime = 'nodejs'; // jer koristi Node API-je
+// export const runtime = 'nodejs'; // jer koristi Node API-je
 
 export async function POST(request: NextRequest) {
   try {

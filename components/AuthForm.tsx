@@ -18,7 +18,7 @@ import Link from "next/link";
 import signUpLogicSubmit from "@/database/signUpLogic";
 import { signInSchema } from "@/lib/validations";
 import { signInWithCredentials } from "@/lib/actions/auth";
-
+import { toast } from "sonner";
 interface Props<T extends FieldValues> {
   type: "sign-in" | "log-in";
   schema: z.ZodType<T, any, T>;
@@ -29,12 +29,14 @@ const AuthForm = <T extends FieldValues>({
   schema,
   defaultValues,
 }: Props<T>) => {
+  
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: defaultValues as DefaultValues<T>,
   });
-
+  
   const handleOnSubmit = async (values: z.infer<typeof schema>) => {
+  
     if (type === "sign-in") {
       await signUpLogicSubmit(
         values as unknown as z.infer<typeof signInSchema>
@@ -53,17 +55,20 @@ const AuthForm = <T extends FieldValues>({
         });
         console.log("Login response:", res);
         if (res?.success) {
+          toast("Login successful!");
           window.location.href = "/";
         } else {
+          toast("Login failed. Please try again.");
           console.log("Login failed:", res?.error);
         }
       } catch (error) {
+        toast("An error occurred while logging in.");
         console.error("Error logging in:", error);
       }
     }
   };
-  return (
-    <div className="mt-[40px]">
+  return (  
+  <div className="mt-[40px]">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleOnSubmit)}
@@ -135,6 +140,7 @@ const AuthForm = <T extends FieldValues>({
         </form>
       </Form>
     </div>
+    
   );
 };
 

@@ -59,15 +59,22 @@ export const Header = () => {
               </Avatar>
             </PopoverTrigger>
             <PopoverContent
-            onClick={async () =>{ 
+          
+            className="w-[200px] py-2"> 
+            <ul>
+              <li className="flex justify-center cursor-pointer hover:font-bold transition duration-300 ease-in-out text-center">
+                <Link href={'/my-profile'}>My profile</Link>
+              </li>
+              <li onClick={async () =>{ 
               try{
                 await  signOut({redirectTo: "/log-in"});
               }catch(e){
             console.error("Error signing out:", e);
               }
 
-            }}
-            className="w-[200px] py-2 flex justify-center cursor-pointer hover:bg-[var(--basic-gray)]"> Logout &nbsp;<Image alt="logout_image" src={'icons/logout.svg'} width={20} height={20} />
+            }} className="flex justify-center cursor-pointer hover:font-bold transition duration-300 ease-in-out text-center">Logout &nbsp;<Image alt="logout_image" src={'icons/logout.svg'} width={20} height={20} /></li>
+            
+            </ul>
             </PopoverContent>
           </Popover>
         </li>

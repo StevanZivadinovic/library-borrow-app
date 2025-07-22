@@ -33,8 +33,8 @@ console.log("Signing in with credentials:", { email, password });
 
     return { success: true, user: result?.user };
   } catch (error) {
-    console.log(error, "Signin error");
-    return { success: false, error: "Signin error" };
+    console.log(error, "Signin error!");
+    return { success: false, error: "Signin error!" };
   }
 };
 
@@ -53,7 +53,7 @@ export const signUp = async (params: AuthCredentials) => {
     .limit(1);
 
   if (existingUser.length > 0) {
-    return { success: false, error: "User already exists" };
+    return { success: false, error: "User already exists!" };
   }
 
   const hashedPassword = await hash(password, 10);
@@ -79,7 +79,7 @@ export const signUp = async (params: AuthCredentials) => {
 
     return { success: true, user: { email, fullName }};
   } catch (error) {
-    console.log(error, "Signup error");
-    return { success: false, error: "Signup error" };
+    console.log(error, "Signup error!");
+    return { success: false, error: "Signup error!" };
   }
 };

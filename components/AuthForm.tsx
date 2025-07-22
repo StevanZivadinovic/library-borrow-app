@@ -43,10 +43,10 @@ const AuthForm = <T extends FieldValues>({
           values as unknown as z.infer<typeof signInSchema>
         );
         if (res?.success) {
-          toast("Login successful!");
+          toast("Registration successful!");
                     window.location.href = "/";
         } else {
-          toast("Login failed. Please try again.");
+          toast(`Registration failed. ${res?.error}`);
           console.log("Login failed:", res?.error);
         }
       }catch (error) {
@@ -69,7 +69,7 @@ const AuthForm = <T extends FieldValues>({
           toast("Login successful!");
           window.location.href = "/";
         } else {
-          toast("Login failed. Please try again.");
+          toast(`Login failed. ${res?.error}`);
           console.log("Login failed:", res?.error);
         }
       } catch (error) {

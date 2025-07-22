@@ -1,4 +1,5 @@
-import importDbUsers from '@/database/importDbUsers';
+
+import getDbUsers from '@/database/getDbUsers';
 import { NextRequest, NextResponse } from 'next/server';
 
 
@@ -7,7 +8,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const user = await importDbUsers(body);
+    const user = await getDbUsers(body);
 
     if (!user) {
       return NextResponse.json(

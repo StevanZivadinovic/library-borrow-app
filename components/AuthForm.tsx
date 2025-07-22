@@ -15,10 +15,10 @@ import { Button } from "./ui/button";
 import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
 import ImageInput from "./ImageInput";
 import Link from "next/link";
-import signUpLogicSubmit from "@/database/signUpLogic";
 import { signInSchema } from "@/lib/validations";
-import { signInWithCredentials } from "@/lib/actions/auth";
+import { signInWithCredentials, signUp } from "@/lib/actions/auth";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 interface Props<T extends FieldValues> {
   type: "sign-in" | "log-in";
   schema: z.ZodType<T, any, T>;
@@ -29,7 +29,7 @@ const AuthForm = <T extends FieldValues>({
   schema,
   defaultValues,
 }: Props<T>) => {
-  
+  const router = useRouter();
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: defaultValues as DefaultValues<T>,
@@ -38,9 +38,20 @@ const AuthForm = <T extends FieldValues>({
   const handleOnSubmit = async (values: z.infer<typeof schema>) => {
   
     if (type === "sign-in") {
-      await signUpLogicSubmit(
-        values as unknown as z.infer<typeof signInSchema>
-      );
+      try{
+        const res = await signUp(
+          values as unknown as z.infer<typeof signInSchema>
+        );
+        if (res?.success) {
+          toast("Login successful!");
+                    window.location.href = "/";
+        } else {
+          toast("Login failed. Please try again.");
+          console.log("Login failed:", res?.error);
+        }
+      }catch (error) {
+        console.error("Error submitting form:", error);
+      }
       try {
         console.log(typeof values);
         form.reset();

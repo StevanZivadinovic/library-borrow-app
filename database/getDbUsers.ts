@@ -1,11 +1,11 @@
-// importDbUsers.ts (samo backend)
+
 import { db } from '@/database/drizzle';
 import { users } from '@/database/schema';
 import { compare } from 'bcryptjs';
 import { eq } from 'drizzle-orm';
 import { User } from 'next-auth';
 
-const importDbUsers = async (
+const getDbUsers = async (
   credentials: Partial<Record<'email' | 'password', unknown>>
 ): Promise<User | null> => {
   if (!credentials.email || !credentials.password) {
@@ -34,4 +34,4 @@ const importDbUsers = async (
   } as User;
 };
 
-export default importDbUsers;
+export default getDbUsers;

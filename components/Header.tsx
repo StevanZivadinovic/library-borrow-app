@@ -11,7 +11,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { signOut, useSession } from "next-auth/react";
-import { signOutFunc } from "@/lib/actions/auth";
 export const Header = () => {
   const { data: user } = useSession();
    const pathname = usePathname();
@@ -60,9 +59,13 @@ export const Header = () => {
               </Avatar>
             </PopoverTrigger>
             <PopoverContent
-            onClick={()=>{
-              
-                signOutFunc();
+            onClick={async () =>{ 
+              try{
+                await  signOut({redirectTo: "/log-in"});
+              }catch(e){
+            console.error("Error signing out:", e);
+              }
+
             }}
             className="w-[200px] py-2 flex justify-center cursor-pointer hover:bg-[var(--basic-gray)]"> Logout &nbsp;<Image alt="logout_image" src={'icons/logout.svg'} width={20} height={20} />
             </PopoverContent>

@@ -83,13 +83,3 @@ export const signUp = async (params: AuthCredentials) => {
     return { success: false, error: "Signup error" };
   }
 };
-
-export const signOutFunc= async () => {
-  try {
-    await signOut({ redirect: true, redirectTo: "/login" });
-    return { success: true };
-  } catch (error) {
-    console.error("Sign out error:", error);
-    return { success: false, error: "Sign out error" };
-  }
-}

@@ -16,7 +16,7 @@ const Layout =async  ({children}: {children: ReactNode}) => {
  from-[var(--gradiend-dark-form-one)] to-[var(--gradiend-dark-form-two)] rounded-lg '>
 <div className="auth-box w-[90%] p-5">
   <div className="flex flex-row gap-3">
-    <Image src={'icons/logo.svg'} alt='logo' width={37} height={37}></Image>
+    <Image src={'icons/logo.svg'} alt='logo' width={37} height={37}  priority={true}></Image>
     <h1 className='text-2xl font-semibold text-white'>BookWise</h1>
   </div>
       <div className='mt-5'>{children}</div>

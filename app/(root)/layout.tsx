@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation"; 
 import React, { useEffect } from "react";
+import { ClipLoader } from "react-spinners";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
@@ -15,7 +16,16 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     }
   }, [status, router]);
 
-  if (status === "loading") return null; 
+  if (status === "loading") return (<div className="flex justify-center items-center h-screen w-full">
+    <ClipLoader
+        color={'white'}
+        loading={true}
+        className="flex justify-center items-center h-screen w-full"
+        size={150}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
+  </div> )
 
   return (
     <>

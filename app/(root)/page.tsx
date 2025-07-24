@@ -7,6 +7,7 @@ const Home=async () =>{
   return    <>
   <BookOverview {...sampleBooks[3]}/>
   <BookList
+  showTitle={true}
   title={"Popular Books"}
   books={sampleBooks}
   containerClassName={'mt-28'}  />

@@ -15,3 +15,9 @@ interface BookType {
   isBorrowed?: boolean;
 
 }
+interface BookCardProps {
+  book: BookType;
+  bookWidth?: string;
+  bookBorrowedStyle?: string;
+  isMyProfile?: boolean;
+}

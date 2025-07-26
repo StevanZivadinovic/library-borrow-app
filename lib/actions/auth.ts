@@ -6,30 +6,36 @@ import { users } from "@/database/schema";
 import { hash } from "bcryptjs";
 import { signIn } from "@/auth";
 import { headers } from "next/headers";
-import ratelimit from "../ratelimit";
+import { ratelimitLogin, ratelimitRegister } from "../ratelimit";
 import { redirect } from "next/navigation";
-// import ratelimit from "@/lib/ratelimit";
+
 // import { workflowClient } from "@/lib/workflow";
 // import config from "@/lib/config";
 
 export const signInWithCredentials = async (
-  params: Pick<AuthCredentials, "email" | "password">,
+  params: Pick<AuthCredentials, "email" | "password">
 ) => {
   const { email, password } = params;
-console.log("Signing in with credentials:", { email, password });
+  console.log("Signing in with credentials:", { email, password });
   const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1";
-  const { success } = await ratelimit.limit(ip);
+  const { success } = await ratelimitLogin.limit(ip);
 
-  if (!success) return redirect("/too-fast");
+  // if (!success) return redirect("/too-fast");
+  if (!success) {
+    console.log("Rate limit exceeded for IP:", ip);
+    return { success: false, error: "Too fast, ratelimit overwhelmed" };
+  }
 
   try {
-    const result = await signIn("credentials", {
+    const result = (await signIn("credentials", {
       email,
       password,
       redirect: false,
-    }) as { error?: string; user?: any };
+    })) as { error?: string; user?: any };
 
+    console.log("Sign-in result:", result);
     if (result?.error) {
+      console.log("Sign-in error:", result.error);
       return { success: false, error: result.error };
     }
 
@@ -43,10 +49,9 @@ console.log("Signing in with credentials:", { email, password });
 export const signUp = async (params: AuthCredentials) => {
   const { fullName, email, universityId, password, universityCard } = params;
 
-  // const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1";
-  // const { success } = await ratelimit.limit(ip);
-
-  // if (!success) return redirect("/too-fast");
+  const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1";
+  const { success } = await ratelimitRegister.limit(ip);
+    if (!success) return redirect("/too-fast");
 
   const existingUser = await db
     .select()
@@ -77,9 +82,13 @@ export const signUp = async (params: AuthCredentials) => {
     //   },
     // });
 
-    await signInWithCredentials({ email, password });
+    const loginResult = await signInWithCredentials({ email, password });
 
-    return { success: true, user: { email, fullName }};
+    if (!loginResult.success) {
+      return { success: false, error: "Auto-login failed!" };
+    } else {
+      return { success: true, user: { email, fullName } };
+    }
   } catch (error) {
     console.log(error, "Signup error!");
     return { success: false, error: "Signup error!" };

@@ -18,7 +18,7 @@ import Link from "next/link";
 import { signInSchema } from "@/lib/validations";
 import { signInWithCredentials, signUp } from "@/lib/actions/auth";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+
 interface Props<T extends FieldValues> {
   type: "sign-in" | "log-in";
   schema: z.ZodType<T, any, T>;
@@ -29,7 +29,6 @@ const AuthForm = <T extends FieldValues>({
   schema,
   defaultValues,
 }: Props<T>) => {
-  const router = useRouter();
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: defaultValues as DefaultValues<T>,
@@ -47,13 +46,12 @@ const AuthForm = <T extends FieldValues>({
                     window.location.href = "/";
         } else {
           toast(`Registration failed. ${res?.error}`);
-          console.log("Login failed:", res?.error);
+          console.log("Registration failed:", res?.error);
         }
       }catch (error) {
         console.error("Error submitting form:", error);
       }
       try {
-        console.log(typeof values);
         form.reset();
       } catch (error) {
         console.error("Error submitting form:", error);
@@ -69,6 +67,10 @@ const AuthForm = <T extends FieldValues>({
           toast("Login successful!");
           window.location.href = "/";
         } else {
+          if(res?.error === "Too fast, ratelimit overwhelmed"){
+            toast("Too many requests, please try again later.");
+            window.location.href = "/too-fast";
+          }
           toast(`Login failed. ${res?.error}`);
           console.log("Login failed:", res?.error);
         }

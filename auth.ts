@@ -17,7 +17,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
-        console.log(auth,process.env.AUTH_SECRET);
         const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/login`, {
           method: "POST",
           headers: {

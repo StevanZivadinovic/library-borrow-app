@@ -16,7 +16,7 @@ const ratelimitLogin = new Ratelimit({
 
 const ratelimitRegister = new Ratelimit({
   redis: redis, //umesto redis objecta koji si custom postavio, mozes i Redis iz "@upstash/redis", to je genericki redis client,
-  limiter: Ratelimit.slidingWindow(1, "5 m"),
+  limiter: Ratelimit.slidingWindow(1, "1 m"),
   analytics: true,
   /**
    * Optional prefix for the keys used in redis. This is useful if you want to share a redis

@@ -1,6 +1,9 @@
 "use client";
 
 import { Header } from "@/components/Header";
+import { db } from "@/database/drizzle";
+import { users } from "@/database/schema";
+import { eq } from "drizzle-orm";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation"; 
 import React, { useEffect } from "react";
@@ -8,12 +11,17 @@ import { ClipLoader } from "react-spinners";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const { status } = useSession();
-
+  const { status,data } = useSession();
+  const updateActivity = async () => {
+  await fetch("/api/update-activity", {
+    method: "POST",
+  });
+};
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/log-in");
     }
+    updateActivity()
   }, [status, router]);
 
   if (status === "loading") return (<div className="flex justify-center items-center h-screen w-full">
@@ -27,6 +35,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       />
   </div> )
 
+ 
   return (
     <>
       {status === "authenticated" && (

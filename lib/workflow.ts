@@ -2,7 +2,7 @@ import { Client as WorkflowClient } from "@upstash/workflow";
 import { Client as QStashClient } from "@upstash/qstash";
 import config from "@/config";
 import nodemailer from "nodemailer";
-import { getWelcomeEmail } from "./email/welcome";
+import { getWelcomeEmail } from "./email/welcome_email";
 
 export const workflowClient = new WorkflowClient({
   token: config.env.upstash.qstashToken,

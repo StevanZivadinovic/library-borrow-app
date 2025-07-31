@@ -1,12 +1,11 @@
 import { Client as WorkflowClient } from "@upstash/workflow";
 import { Client as QStashClient } from "@upstash/qstash";
 import config from "@/config";
-import emailjs from '@emailjs/browser';
-
+import nodemailer from "nodemailer";
+import { getWelcomeEmail } from "./email/welcome";
 
 export const workflowClient = new WorkflowClient({
-  token: config.env.upstash.qstashToken
-  
+  token: config.env.upstash.qstashToken,
 });
 
 export const qstashClient = new QStashClient({
@@ -17,34 +16,32 @@ type InitialData = {
   email: string;
   fullName: string;
 };
-
-emailjs.init({
-  publicKey: 'user_iDF7GBVBepZlv2bZg187d',
-  // Do not allow headless browsers
-  blockHeadless: true,
-    limitRate: {
-    // Set the limit rate for the application
-    id: 'rate-limit-1',
-    // Allow 1 request per 10s
-    throttle: 10000,
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "stevanzivadinovic11@gmail.com",
+    pass: process.env.GOOGLE_APP_PASSWORD,
   },
 });
 
-export const sendWelcomeEmail = async (templateParams: InitialData): Promise<void> => {
+export const sendWelcomeEmail = async (
+  templateParams: InitialData
+): Promise<void> => {
   if (!templateParams || !templateParams.email || !templateParams.fullName) {
     throw new Error("Invalid template parameters");
   }
-  console.log("Sending welcome email to:", templateParams.email);
   const { email, fullName } = templateParams;
-  const emailParams = {
-    to_email: email,
-    fullName: fullName,
-  };
-
+ const { subject, html, text } = getWelcomeEmail(fullName);
+ 
   try {
-    const response = await emailjs.send('service_7zyc2rn', 'template_xbsso5c', emailParams);
-    console.log('SUCCESS!', response.status, response.text);
+    transporter.sendMail({
+      from: "stevanzivadinovic11@gmail.com",
+      to: email,
+      subject,
+      html,
+      text,
+    });
   } catch (error) {
-    console.error('FAILED...', error);
+    console.error("FAILED...", error);
   }
 };

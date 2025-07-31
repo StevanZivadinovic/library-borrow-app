@@ -40,22 +40,33 @@ const getUserState = async (email: string): Promise<UserState> => {
 
 export const { POST } = serve(
   async (context) => {
- 
+    console.log("Workflow started with payload:", context.requestPayload);
     const {fullName, email} = context.requestPayload as InitialData
-    if(context.requestPayload!==undefined){
-      console.log("Workflow input:", fullName, email);
-    }
+  
     await context.run("initial-step", async () => {
-      await sendWelcomeEmail({fullName, email});
-      console.log("initial step ran")
+           await sendWelcomeEmail({fullName, email});
     })
+     await context.sleep("wait-for-3-days", 60 * 60 * 24 * 3);
+    while (true) {
+    const state = await context.run("check-user-state", async () => {
+      return await getUserState(email);
+    });
 
-    await context.run("second-step", () => {
-      console.log("second step ran")
-    })
+    if (state === "non-active") {
+      await context.run("send-email-non-active", async () => {
+     console.log("User is non-active, sending email...");
+      });
+    } else if (state === "active") {
+      await context.run("send-email-active", async () => {
+      
+      });
+    }
+
+    // await context.sleep("wait-for-1-month", 60 * 60 * 24 * 30);
+    }
   },
-   {
-  retries: 3,
-  // verbose: true,  
-}
-)
+  {
+    retries: 3,
+    // verbose: true,  
+  }
+);

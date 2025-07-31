@@ -1,6 +1,6 @@
 import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
-import { sendWelcomeEmail } from "@/lib/workflow";
+import { sendEmail } from "@/lib/workflow";
 import { serve } from "@upstash/workflow/nextjs"
 import { eq } from "drizzle-orm";
 
@@ -9,6 +9,8 @@ type UserState = "non-active" | "active";
 type InitialData = {
   email: string;
   fullName: string;
+  typeOFmail: "welcome" | "not-active" | "active";
+
 };
 
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
@@ -44,7 +46,7 @@ export const { POST } = serve(
     const {fullName, email} = context.requestPayload as InitialData
   
     await context.run("initial-step", async () => {
-           await sendWelcomeEmail({fullName, email});
+           await sendEmail({ fullName, email, typeOFmail: "welcome" });
     })
      await context.sleep("wait-for-3-days", 60 * 60 * 24 * 3);
     while (true) {
@@ -54,15 +56,16 @@ export const { POST } = serve(
 
     if (state === "non-active") {
       await context.run("send-email-non-active", async () => {
-     console.log("User is non-active, sending email...");
+           await sendEmail({ fullName, email, typeOFmail: "not-active" });
+     
       });
     } else if (state === "active") {
       await context.run("send-email-active", async () => {
-      
+           await sendEmail({ fullName, email, typeOFmail: "active" });
       });
     }
 
-    // await context.sleep("wait-for-1-month", 60 * 60 * 24 * 30);
+    await context.sleep("wait-for-1-month", 60 * 60 * 24 * 30);
     }
   },
   {

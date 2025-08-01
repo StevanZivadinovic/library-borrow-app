@@ -58,11 +58,14 @@
   --gradiend-dark-form-two:#12151F;
   --basic-dark-form-three: #14171C;
   --basic-gray: #D6E0FF;
+  --basic-admin-gray:#F8F8FF;
+  --admin-basic-black:#1E293B;
   --basic-cream:#EED1AC;
   --basic-cream-second: #E7C9A5;
   --basic-green:#3d8959;
   --basic-dark:#060813;
   --basic-native: #232839;
+  --basic-native-admin: #25388C;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);

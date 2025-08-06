@@ -18,6 +18,7 @@ import { bookSchema } from "@/lib/validations";
 // import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import ImageInput from "@/components/ImageInput";
 // import FileUpload from "@/components/FileUpload";
 // import ColorPicker from "@/components/admin/ColorPicker";
 // import { createBook } from "@/lib/admin/actions/book";
@@ -107,7 +108,7 @@ const BookForm = ({ type, ...book }: Props) => {
                   required
                   placeholder="Book author"
                   {...field}
-                     className="
+                  className="
                   caret-black text-[var(--admin-basic-black)]
                 min-h-12 border border-gray-100 
                 bg-[var(--admin-book-form-input-bg)]
@@ -195,6 +196,21 @@ const BookForm = ({ type, ...book }: Props) => {
                 p-4 text-base font-semibold placeholder:font-normal
                 placeholder:text-[var(--admin-book-form-placeholder)] !important"
                 />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="coverUrl"
+          rules={{ required: "Book image is required!" }}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Book Image</FormLabel>
+              <FormControl>
+              <ImageInput value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -292,6 +308,20 @@ const BookForm = ({ type, ...book }: Props) => {
             </FormItem>
           )}
         /> */}
+        <FormField
+          control={form.control}
+          name="coverUrl"
+          rules={{ required: "Book video is required!" }}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Book Video</FormLabel>
+              <FormControl>
+              <ImageInput value={field.value} onChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name={"summary"}

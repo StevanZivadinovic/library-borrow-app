@@ -101,15 +101,7 @@ const ImageInput = ({ value, onChange }: ImageInputProps) => {
         }
     };
   return (
-
-    // <Input
-    //                     required
-    //                   type={FIELD_TYPES[key as keyof typeof FIELD_TYPES] || key}
-    //                     placeholder={`Type your ${key}..`}
-    //                     {...field}
-    //                     className="font-bold p-5 mt-1"
-    //                   />
-      <>
+    <>
 
       <Button type="button" onClick={handleUpload}>
 

@@ -35,7 +35,6 @@ const BookForm = ({ type, ...book }: Props) => {
     resolver: zodResolver(bookSchema),
     defaultValues: {
       title: "",
-      description: "",
       author: "",
       genre: "",
       rating: 1,
@@ -180,7 +179,7 @@ const BookForm = ({ type, ...book }: Props) => {
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1">
               <FormLabel className="text-base font-normal text-dark-500 text-[var(--admin-basic-black)]">
-                Total Copies
+                Total number of books
               </FormLabel>
               <FormControl>
                 <Input
@@ -208,115 +207,25 @@ const BookForm = ({ type, ...book }: Props) => {
           rules={{ required: "Book image is required!" }}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Book Image</FormLabel>
+              <FormLabel className="text-base font-normal text-dark-500 text-[var(--admin-basic-black)]">Book Image</FormLabel>
               <FormControl>
-              <ImageInput value={field.value} onChange={field.onChange} />
+              <ImageInput type="image" value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        {/* <FormField
-          control={form.control}
-          name={"coverUrl"}
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-1">
-              <FormLabel className="text-base font-normal text-dark-500">
-                Book Image
-              </FormLabel>
-              <FormControl>
-                <FileUpload
-                  type="image"
-                  accept="image/*"
-                  placeholder="Upload a book cover"
-                  folder="books/covers"
-                  variant="light"
-                  onFileChange={field.onChange}
-                  value={field.value}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-        {/* <FormField
-          control={form.control}
-          name={"coverColor"}
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-1">
-              <FormLabel className="text-base font-normal text-dark-500">
-                Primary Color
-              </FormLabel>
-              <FormControl>
-                <ColorPicker
-                  onPickerChange={field.onChange}
-                  value={field.value}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
+       
         <FormField
           control={form.control}
-          name={"description"}
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-1">
-              <FormLabel className="text-base font-normal text-dark-500 text-[var(--admin-basic-black)]">
-                Book Description
-              </FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Book description"
-                  {...field}
-                  rows={10}
-                  className="
-                  caret-black text-[var(--admin-basic-black)]
-                min-h-12 border border-gray-100 
-                bg-[var(--admin-book-form-input-bg)]
-                p-4 text-base font-semibold placeholder:font-normal
-                placeholder:text-[var(--admin-book-form-placeholder)] !important"
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* <FormField
-          control={form.control}
-          name={"videoUrl"}
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-1">
-              <FormLabel className="text-base font-normal text-dark-500">
-                Book Trailer
-              </FormLabel>
-              <FormControl>
-                <FileUpload
-                  type="video"
-                  accept="video/*"
-                  placeholder="Upload a book trailer"
-                  folder="books/videos"
-                  variant="light"
-                  onFileChange={field.onChange}
-                  value={field.value}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-        <FormField
-          control={form.control}
-          name="coverUrl"
+          name="videoUrl"
           rules={{ required: "Book video is required!" }}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Book Video</FormLabel>
+              <FormLabel className="text-base font-normal text-dark-500 text-[var(--admin-basic-black)]">Book Video</FormLabel>
               <FormControl>
-              <ImageInput value={field.value} onChange={field.onChange} />
+              <ImageInput type="video" value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

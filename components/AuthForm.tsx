@@ -42,6 +42,7 @@ const AuthForm = <T extends FieldValues>({
           values as unknown as z.infer<typeof signInSchema>
         );
         if (res?.success) {
+          console.log(values.universityCard as File)
           toast("Registration successful!");
                     window.location.href = "/";
         } else {
@@ -111,6 +112,7 @@ const AuthForm = <T extends FieldValues>({
                         />
                       ) : (
                         <ImageInput
+                          type="image"
                           value={field.value}
                           onChange={field.onChange}
                         />

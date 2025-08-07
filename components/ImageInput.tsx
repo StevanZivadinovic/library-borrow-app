@@ -107,6 +107,14 @@ const ImageInput = ({ value, onChange, type }: ImageInputProps) => {
             console.error("Error parsing delete response:", error);
         }
       }
+      if(file.size >= 1024 * 1024 * 10 && type === "image") {
+        toast("File size exceeds 10MB limit. Please select a smaller file.");
+        return
+      }
+      if(file.size >= 1024 * 1024 * 20 && type === "video") {
+        toast("File size exceeds 20MB limit. Please select a smaller file.");
+        return
+      }
       const uploadResponse = await upload({
         expire,
         token,

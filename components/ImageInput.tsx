@@ -8,7 +8,6 @@ import {
   ImageKitServerError,
   ImageKitUploadNetworkError,
   upload,
-  UploadResponse,
 } from "@imagekit/next";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
@@ -16,6 +15,7 @@ import Image from "next/image";
 import { Input } from "./ui/input";
 import { toast } from "sonner";
 import { authenticator } from "@/lib/actions/addMedia";
+import { getCsrfToken } from "next-auth/react";
 
 interface ImageInputProps {
   value?: string;
@@ -26,8 +26,16 @@ const ImageInput = ({ value, onChange, type }: ImageInputProps) => {
   //   const [imageResponse, setImageResponse] = useState<UploadResponse>();
   const [selectedFile, setSelectedFile] = useState<any>(null); // Fajl čuvamo ovde
   const [fileID, setFileID] = useState<string>(""); // ID fajla čuvamo ovde
+  const [csrfToken, setCsrfToken] = useState<string | null>(null);
   // Create a ref for the file input element to access its files easily
   const fileInputRef = useRef<HTMLInputElement>(null);
+   useEffect(() => {
+    async function fetchCsrfToken() {
+      const token = await getCsrfToken();
+      setCsrfToken(token);
+      }
+    fetchCsrfToken();
+  }, []);
   const abortController = new AbortController();
   useEffect(() => {
     if (!selectedFile) return;
@@ -68,7 +76,6 @@ const ImageInput = ({ value, onChange, type }: ImageInputProps) => {
     }
     setSelectedFile(file);
     onChange && onChange(file?.name);
-    console.log("Fajl je selektovan:", file);
     await handleUpload(file);
   };
 
@@ -86,15 +93,23 @@ const ImageInput = ({ value, onChange, type }: ImageInputProps) => {
     // Call the ImageKit SDK upload function with the required parameters and callbacks.
     try {
       const folder = type === "image" ? "/images" : "/videos";
-      if (file) {
-        const fileRoute = `${folder}/${fileID}`;
-        console.log("Deleting file with route:", fileRoute);
+       if (!csrfToken) {
+      console.error("CSRF token not ready");
+      return;
+    }
+      if (file && fileID.length > 0) {    
+        const fileRoute = `${folder}/${fileID}`;    
      const res=   await fetch("/api/delete-file", {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
+            // "X-XSRFToken": csrfToken,
+            
           },
-          body: JSON.stringify({ fileRoute }),
+          body: JSON.stringify({ fileRoute,
+            csrfToken: csrfToken,
+           }),
+          credentials: "include" 
         });
         try {
             const data = await res.json();

@@ -98,15 +98,14 @@ const ImageInput = ({ value, onChange, type }: ImageInputProps) => {
       return;
     }
       if (file && fileID.length > 0) {    
-        const fileRoute = `${folder}/${fileID}`;    
+        const fileIDValue = `${fileID}`;    
      const res=   await fetch("/api/delete-file", {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
-            // "X-XSRFToken": csrfToken,
-            
+                       
           },
-          body: JSON.stringify({ fileRoute,
+          body: JSON.stringify({ fileIDValue,
             csrfToken: csrfToken,
            }),
           credentials: "include" 

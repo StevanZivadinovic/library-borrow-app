@@ -1,38 +1,30 @@
-// app/api/delete-file/route.ts
+import ImageKit from "imagekit";
+import { auth } from "@/auth"
+import { NextRequest, NextResponse } from "next/server"
+import config from "@/config"
 
-import { auth } from '@/auth';
-import { NextRequest, NextResponse } from 'next/server';
+const imagekit = new ImageKit({
+  publicKey: config.env.imagekit.publicKey,
+  privateKey: config.env.imagekit.privateKey,
+  urlEndpoint: config.env.imagekit.urlEndpoint, 
+})
 
 export async function DELETE(req: NextRequest) {
-  const session = await auth();
-if (!session) {
-  console.error("Unauthorized request to delete file.");
-  return false;
-}
+  const session = await auth()
+  if (!session) {
+    return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 })
+  }
+
   try {
-    const { fileRoute } = await req.json();
-
-    const url = `https://api.imagekit.io/v1/${fileRoute}`;
-    const privateKey = process.env.IMAGEKIT_PRIVATE_KEY!;
-    const base64Auth = Buffer.from(privateKey + ":").toString("base64");
-console.log("Deleting file with route:", base64Auth, url);
-    const options = {
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Basic ${base64Auth}`
-      }
-    };
-
-    const response = await fetch(url, options);
-    const data = await response.json();
-       if (!response.ok) {
-        console.error("Failed to delete file:", data);
-      return NextResponse.json({ success: false, error: data.error }, { status: response.status });
+    const { fileIDValue } = await req.json()
+        if (!fileIDValue) {
+      return NextResponse.json({ success: false, error: "fileId is required" }, { status: 400 })
     }
 
-    return NextResponse.json({ success: true, data });
+    const data = await imagekit.deleteFile(fileIDValue);
+
+    return NextResponse.json({ success: true, data, message: "File deleted successfully" });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }

@@ -8,7 +8,7 @@ import {
   ImageKitServerError,
   ImageKitUploadNetworkError,
   upload,
-} from "@imagekit/next";
+  } from "@imagekit/next";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import Image from "next/image";
@@ -27,6 +27,8 @@ const ImageInput = ({ value, onChange, type }: ImageInputProps) => {
   const [selectedFile, setSelectedFile] = useState<any>(null); // Fajl čuvamo ovde
   const [fileID, setFileID] = useState<string>(""); // ID fajla čuvamo ovde
   const [csrfToken, setCsrfToken] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
+  const [showName, setShowName]= useState(false);
   // Create a ref for the file input element to access its files easily
   const fileInputRef = useRef<HTMLInputElement>(null);
    useEffect(() => {
@@ -112,12 +114,15 @@ const ImageInput = ({ value, onChange, type }: ImageInputProps) => {
         });
         try {
             const data = await res.json();
-          if (!res.ok) {
-            throw new Error(`Failed to delete file: ${res.statusText}`);
-          }else{
+            if (!res.ok) {
+              setShowName(false);
+              throw new Error(`Failed to delete file: ${res.statusText}`);
+            }else{
+            setShowName(true);
             console.log("File deleted successfully:", data);
           }
         }catch (error) {
+              setShowName(false);
             console.error("Error parsing delete response:", error);
         }
       }
@@ -138,14 +143,19 @@ const ImageInput = ({ value, onChange, type }: ImageInputProps) => {
         fileName: file && file?.name,
         folder,
         abortSignal: abortController.signal,
+          onProgress: (event) => {
+                    setProgress((event.loaded / event.total) * 100);
+                },
       });
 
       if (onChange && uploadResponse && uploadResponse.url) {
         onChange(uploadResponse.url);
         uploadResponse.fileId && setFileID(uploadResponse.fileId);
+        setShowName(true);
       }
       console.log("Upload response:", uploadResponse);
     } catch (error) {
+      toast.error("Upload failed. Please try again.");
       // Handle specific error types provided by the ImageKit SDK.
       if (error instanceof ImageKitAbortError) {
         console.error("Upload aborted:", error.reason);
@@ -165,7 +175,7 @@ const ImageInput = ({ value, onChange, type }: ImageInputProps) => {
   const handleSelectFile = () => {
     fileInputRef.current?.click();
   };
-
+console.log("Selected file:", selectedFile);
   return (
     <>
       <Button type="button" onClick={handleSelectFile}>
@@ -178,7 +188,7 @@ const ImageInput = ({ value, onChange, type }: ImageInputProps) => {
         {/* Button to trigger the upload process */}
         {type === "image" ? `Upload image ` : `Upload video`}{" "}
         {type === "image" ? <CiImageOn /> : <MdOndemandVideo />}{" "}
-        <span>{selectedFile?.name}</span>
+        {progress === 100 && showName && <span>{selectedFile?.name}</span>}
         <br />
         {/* Display the current upload progress */}
       </Button>
@@ -193,9 +203,27 @@ const ImageInput = ({ value, onChange, type }: ImageInputProps) => {
             height={100}
           />
         </div>
-      ) : (
-        ""
-      )}
+      ) :""}
+      
+      {selectedFile &&
+      type === "video" &&
+      selectedFile?.type?.startsWith("video") ? (
+        <div className="mt-2">
+          <video
+            src={URL.createObjectURL(selectedFile)}
+            width={150}
+            height={100}
+          />
+        </div>
+      ):""}
+      {progress > 0 && progress < 100 && (
+  <div className="w-full bg-gray-200 rounded h-3 mt-4 overflow-hidden">
+    <div
+      className="bg-blue-600 h-3 rounded transition-all duration-300"
+      style={{ width: `${progress}%` }}
+    />
+  </div>
+)}
     </>
   );
 };

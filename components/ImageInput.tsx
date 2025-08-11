@@ -23,7 +23,6 @@ interface ImageInputProps {
   type: "image" | "video";
 }
 const ImageInput = ({ value, onChange, type }: ImageInputProps) => {
-  //   const [imageResponse, setImageResponse] = useState<UploadResponse>();
   const [selectedFile, setSelectedFile] = useState<any>(null); // Fajl čuvamo ovde
   const [fileID, setFileID] = useState<string>(""); // ID fajla čuvamo ovde
   const [csrfToken, setCsrfToken] = useState<string | null>(null);
@@ -130,7 +129,7 @@ const ImageInput = ({ value, onChange, type }: ImageInputProps) => {
         toast("File size exceeds 10MB limit. Please select a smaller file.");
         return
       }
-      if(file.size >= 1024 * 1024 * 20 && type === "video") {
+      if(file.size >= 1024 * 1024 * 10 && type === "video") {
         toast("File size exceeds 20MB limit. Please select a smaller file.");
         return
       }

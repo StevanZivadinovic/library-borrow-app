@@ -19,6 +19,8 @@ import { bookSchema } from "@/lib/validations";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import ImageInput from "@/components/ImageInput";
+import { useEffect } from "react";
+import ColorPicker from "../ColorPicker";
 // import FileUpload from "@/components/FileUpload";
 // import ColorPicker from "@/components/admin/ColorPicker";
 // import { createBook } from "@/lib/admin/actions/book";
@@ -41,13 +43,14 @@ const BookForm = ({ type, ...book }: Props) => {
       totalCopies: 1,
       coverUrl: "",
       coverColor: "",
-      videoUrl: "",
+      // videoUrl: "",
       summary: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof bookSchema>) => {
     console.log("Form submitted with values:", values);
+    console.log(form.formState.errors);
     // const result = await createBook(values);
 
     // if (result.success) {
@@ -216,8 +219,23 @@ const BookForm = ({ type, ...book }: Props) => {
           )}
         />
 
-       
         <FormField
+          control={form.control}
+          name="coverColor"
+          rules={{ required: "Book color is required!" }}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-base font-normal text-dark-500 text-[var(--admin-basic-black)]">Book Primary Color</FormLabel>
+              <FormControl>
+              <ColorPicker value={field.value} onPickerChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+       
+        {/* <FormField
           control={form.control}
           name="videoUrl"
           rules={{ required: "Book video is required!" }}
@@ -230,7 +248,7 @@ const BookForm = ({ type, ...book }: Props) => {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
         <FormField
           control={form.control}
           name={"summary"}

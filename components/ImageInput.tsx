@@ -174,10 +174,9 @@ const ImageInput = ({ value, onChange, type }: ImageInputProps) => {
   const handleSelectFile = () => {
     fileInputRef.current?.click();
   };
-console.log("Selected file:", selectedFile);
   return (
     <>
-      <Button type="button" onClick={handleSelectFile}>
+      <Button type="button" onClick={handleSelectFile} className="cursor-pointer">
         <Input
           className="hidden"
           type="file"
@@ -212,6 +211,7 @@ console.log("Selected file:", selectedFile);
             src={URL.createObjectURL(selectedFile)}
             width={150}
             height={100}
+            controls
           />
         </div>
       ):""}

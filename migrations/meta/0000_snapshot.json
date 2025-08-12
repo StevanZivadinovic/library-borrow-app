@@ -1,5 +1,5 @@
 {
-  "id": "81920ce4-590e-4148-ad28-56b230796332",
+  "id": "485cab8b-2b52-4e95-bee4-4987ea38776b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -11,7 +11,7 @@
         "id": {
           "name": "id",
           "type": "uuid",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true,
           "default": "gen_random_uuid()"
         },
@@ -51,12 +51,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
         "total_copies": {
           "name": "total_copies",
           "type": "integer",
@@ -70,12 +64,6 @@
           "primaryKey": false,
           "notNull": true,
           "default": 0
-        },
-        "video_url": {
-          "name": "video_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
         },
         "summary": {
           "name": "summary",

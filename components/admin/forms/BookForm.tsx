@@ -21,6 +21,8 @@ import { Textarea } from "@/components/ui/textarea";
 import ImageInput from "@/components/ImageInput";
 import { useEffect } from "react";
 import ColorPicker from "../ColorPicker";
+import { addBookToDB } from "@/lib/actions/admin/addBookToDB";
+import { toast } from "sonner";
 // import FileUpload from "@/components/FileUpload";
 // import ColorPicker from "@/components/admin/ColorPicker";
 // import { createBook } from "@/lib/admin/actions/book";
@@ -47,26 +49,19 @@ const BookForm = ({ type, ...book }: Props) => {
       summary: "",
     },
   });
-
+console.log(form.formState.errors, `Boja` + form.getValues("coverColor"));
   const onSubmit = async (values: z.infer<typeof bookSchema>) => {
     console.log("Form submitted with values:", values);
-    console.log(form.formState.errors);
-    // const result = await createBook(values);
+     const result = await addBookToDB(values as BookType);
 
-    // if (result.success) {
-    //   toast({
-    //     title: "Success",
-    //     description: "Book created successfully",
-    //   });
+    if (result.success) {
+      toast("Book created successfully");
 
-    //   router.push(`/admin/books/${result.data.id}`);
-    // } else {
-    //   toast({
-    //     title: "Error",
-    //     description: result.message,
-    //     variant: "destructive",
-    //   });
-    // }
+      router.push(`/admin/books/${result?.data?.id}`);
+    } else {
+      toast("Error creating book: " + result.message)
+       
+    }
   };
 
   return (
@@ -276,7 +271,7 @@ const BookForm = ({ type, ...book }: Props) => {
           )}
         />
 
-        <Button type="submit" className="book-form_btn text-white">
+        <Button type="submit" className="book-form_btn text-white cursor-pointer">
           Add Book to Library
         </Button>
       </form>

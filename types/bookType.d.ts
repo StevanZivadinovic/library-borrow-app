@@ -1,20 +1,21 @@
 interface BookType {
-    id: number
+    id: string
   title: string;
   author: string;
   genre: string;
   rating: number;
-  total_copies: number;
-  available_copies: number;
+  totalCopies: number;
+  availableCopies: number;
   description: string;
-  color: string;
-  cover: string;
-  video:string;
+  coverColor: string;
+  coverUrl: string;
+  // videoUrl:string;
   summary:string;
   isLoandedBook?: boolean;
   isBorrowed?: boolean;
 
 }
+
 interface BookCardProps {
   book: BookType;
   bookWidth?: string;

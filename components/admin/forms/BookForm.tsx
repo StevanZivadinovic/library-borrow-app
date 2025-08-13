@@ -15,18 +15,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { bookSchema } from "@/lib/validations";
-// import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import ImageInput from "@/components/ImageInput";
-import { useEffect } from "react";
 import ColorPicker from "../ColorPicker";
 import { addBookToDB } from "@/lib/actions/admin/addBookToDB";
 import { toast } from "sonner";
-// import FileUpload from "@/components/FileUpload";
-// import ColorPicker from "@/components/admin/ColorPicker";
-// import { createBook } from "@/lib/admin/actions/book";
-// import { toast } from "@/hooks/use-toast";
 
 interface Props extends Partial<BookType> {
   type?: "create" | "update";
@@ -49,9 +43,9 @@ const BookForm = ({ type, ...book }: Props) => {
       summary: "",
     },
   });
-console.log(form.formState.errors, `Boja` + form.getValues("coverColor"));
+
   const onSubmit = async (values: z.infer<typeof bookSchema>) => {
-    console.log("Form submitted with values:", values);
+   
      const result = await addBookToDB(values as BookType);
 
     if (result.success) {

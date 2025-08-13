@@ -10,7 +10,7 @@ const BookOverview = ({
   rating,
   totalCopies,
   availableCopies,
-  description,
+  summary,
   coverColor,
   coverUrl,
 }:BookType) => {
@@ -40,7 +40,7 @@ const BookOverview = ({
                 Available Books: <span className="font-semibold text-light-200 text-[var(--basic-cream)]">{availableCopies}</span>
             </p>
         </div>
-        <p className="book-description text-justify">{description}</p>
+        <p className="book-description text-justify">{summary}</p>
         <Button className="book-overview-btn cursor-pointer bg-[var(--basic-cream)] mt-5 w-50" variant="secondary">
             <Image src={'./icons/book.svg'} alt="book" width={20} height={20}/>
             <p className="font-bebas text-sm font-bold uppercase">Borrow Book</p>

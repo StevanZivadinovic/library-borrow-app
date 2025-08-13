@@ -5,16 +5,17 @@ import Image from 'next/image'
 import { Button } from './ui/button'
 
 export const BookCard = ({book, bookWidth,bookBorrowedStyle,isMyProfile}:BookCardProps) => {
+  console.log("BookCard Props:", book)
    return (
- <div key={book?.id} className="book-card flex flex-col justify-between h-full">
-  <Link href={`/boooks/${book.id}`} className={`flex flex-col h-full ${bookBorrowedStyle} p-2 rounded-lg`}>
+ <div key={book?.id} className="book-card flex flex-col justify-between h-full ">
+  <Link href={`/books/${book.id}`} className={`flex flex-col h-full ${bookBorrowedStyle} p-2 rounded-lg`}>
    
     <div className={`w-full h-[250px]  ${bookWidth} rounded-lg ${isMyProfile && 'relative'} z-100`}>
       {isMyProfile && <div className="absolute -top-5 -left-5 bottom-5 -right-5 p-2! flex -z-15!" style={{ backgroundColor: book?.coverColor }}></div>}
       <img
         src={book.coverUrl}
         alt={book.title}
-        className="w-full h-full object-cover transition-transform duration-200 hover:scale-105"
+        className="w-full h-full object-cover transition-transform duration-200 hover:scale-105 rounded-sm"
       />
     </div>
 

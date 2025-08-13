@@ -6,7 +6,7 @@ interface BookType {
   rating: number;
   totalCopies: number;
   availableCopies: number;
-  description: string;
+  description?: string;
   coverColor: string;
   coverUrl: string;
   // videoUrl:string;

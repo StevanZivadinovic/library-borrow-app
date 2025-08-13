@@ -1,9 +1,8 @@
-import Link from "next/link";
 import React from "react";
 import { BookCard } from "./BookCard";
 
 const BookList = ({ title, books, containerClassName, showTitle,bookWidth,bookBorrowedStyle,isMyProfile }: bookListType) => {
-  return (
+    return (
     <section className="w-full">
      {showTitle && <h2 className="font-bebas text-4xl text-light-100 mt-20 text-left">
         {title}

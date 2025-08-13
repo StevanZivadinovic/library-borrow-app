@@ -8,11 +8,11 @@ const BookOverview = ({
   author,
   genre,
   rating,
-  total_copies,
-  available_copies,
+  totalCopies,
+  availableCopies,
   description,
-  color,
-  cover,
+  coverColor,
+  coverUrl,
 }:BookType) => {
   return (
     <section className="book-overview flex flex-col sm:flex-row!">
@@ -34,10 +34,10 @@ const BookOverview = ({
         </div>
         <div className="book-copies flex gap-2">
             <p>
-                Total Books: <span className="font-semibold text-light-200 text-[var(--basic-cream)]">{total_copies}</span>
+                Total Books: <span className="font-semibold text-light-200 text-[var(--basic-cream)]">{totalCopies}</span>
             </p>
             <p>
-                Available Books: <span className="font-semibold text-light-200 text-[var(--basic-cream)]">{available_copies}</span>
+                Available Books: <span className="font-semibold text-light-200 text-[var(--basic-cream)]">{availableCopies}</span>
             </p>
         </div>
         <p className="book-description text-justify">{description}</p>
@@ -51,15 +51,15 @@ const BookOverview = ({
             <BookCover
             variant='wide'
             className='z-10'
-            coverColor={color}
-            coverImage={cover}
+            coverColor={coverColor}
+            coverImage={coverUrl}
             />
         </div>
          <div className="absolute left-[60%] top-10 rotate-12 opacity-60">
             <BookCover
             variant='wide'
-            coverColor={color}
-            coverImage={cover}
+            coverColor={coverColor}
+            coverImage={coverUrl}
             />
         </div>
       </div>

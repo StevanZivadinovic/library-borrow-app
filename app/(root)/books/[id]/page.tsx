@@ -12,6 +12,7 @@ const BookDetails = async ({
 }>;
 }) => { 
     const  {id}  = await params;
+  
     let bookDetails: BookType[] = [];
   try {
        bookDetails = await db

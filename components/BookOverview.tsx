@@ -1,9 +1,14 @@
+"use client";
 import Image from "next/image";
-import React from "react";
 import { Button } from "./ui/button";
 import { BookCover } from "./BookCover";
+import { borrowBook } from "@/lib/actions/borrowBook";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const BookOverview = ({
+  id,
   title,
   author,
   genre,
@@ -14,6 +19,29 @@ const BookOverview = ({
   coverColor,
   coverUrl,
 }:BookType) => {
+const { status,data } = useSession();
+const router = useRouter();
+let recordValue:any;
+  const handleSubmit = async () => {
+    console.log('ovdeka sam')
+    try {
+      if(data?.user?.id && id){
+          recordValue =data.user.id && await borrowBook(data?.user?.id, id)
+      }
+     if (!recordValue.success) {
+      toast(recordValue.error || "Failed to borrow book");
+       throw new Error(recordValue.error || "Failed to borrow book");
+      }else{
+      toast("Book is borrowed successfully");
+      router.push("/my-profile");
+    }
+    }
+    catch (error) {
+      console.error("Error borrowing book:", error);
+      throw new Error("Failed to borrow book");
+      };
+    }
+    
   return (
     <section className="book-overview flex flex-col sm:flex-row!">
       <div className="flex flex-1 flex-col gap-5">
@@ -41,10 +69,10 @@ const BookOverview = ({
             </p>
         </div>
         <p className="book-description text-justify">{summary}</p>
-        <Button className="book-overview-btn cursor-pointer bg-[var(--basic-cream)] mt-5 w-50" variant="secondary">
+        {data?.user &&<Button onClick={handleSubmit} className="book-overview-btn cursor-pointer bg-[var(--basic-cream)] mt-5 w-50" variant="secondary">          
             <Image src={'./icons/book.svg'} alt="book" width={20} height={20}/>
-            <p className="font-bebas text-sm font-bold uppercase">Borrow Book</p>
-        </Button>
+             <p className="font-bebas text-sm font-bold uppercase">Borrow Book</p>          
+        </Button>}
       </div>
       <div className="relative flex flex-1 justify-center ">
         <div className="relative">

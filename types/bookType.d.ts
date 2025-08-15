@@ -22,3 +22,8 @@ interface BookCardProps {
   bookBorrowedStyle?: string;
   isMyProfile?: boolean;
 }
+
+interface BorrowBookParams {
+  bookId: string;
+  userId: string;
+}

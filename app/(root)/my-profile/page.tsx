@@ -1,8 +1,16 @@
+"use client";
+import { useEffect, useState } from "react";
 import BookList from '@/components/BookList'
-import { sampleBooks } from '@/constants'
-import React from 'react'
+import { fetchBooks } from "@/lib/actions/getBooks";
+
 
 const MyProfilePage = () => {
+    const [booksData, setBooksData]=useState<BookType[]>([]);
+  
+  
+    useEffect(() => {
+      fetchBooks(setBooksData);
+       }, []);
   return (
     <div className='flex justify-between w-[80%] mx-auto'>
       <div className="profile_data flex-1">
@@ -12,7 +20,7 @@ const MyProfilePage = () => {
         <h2 className='font-semibold text-[var(--basic-gray)] text-3xl'>Borrowed books</h2>
          <BookList
         title={"Popular Books"}
-        books={sampleBooks}
+        books={booksData}
         containerClassName={'mt-28 sm:grid-cols-2!'} 
          bookWidth={'w-[70%]!'}
          bookBorrowedStyle={'justify-center items-center'}

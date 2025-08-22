@@ -18,12 +18,12 @@ const BookOverview = ({
   summary,
   coverColor,
   coverUrl,
+  description
 }:BookType) => {
 const { status,data } = useSession();
 const router = useRouter();
 let recordValue:any;
   const handleSubmit = async () => {
-    console.log('ovdeka sam')
     try {
       if(data?.user?.id && id){
           recordValue =data.user.id && await borrowBook(data?.user?.id, id)
@@ -69,10 +69,15 @@ let recordValue:any;
             </p>
         </div>
         <p className="book-description text-justify">{summary}</p>
+       
         {data?.user &&<Button onClick={handleSubmit} className="book-overview-btn cursor-pointer bg-[var(--basic-cream)] mt-5 w-50" variant="secondary">          
             <Image src={'/icons/book.svg'} alt="book" width={20} height={20}/>
              <p className="font-bebas text-sm font-bold uppercase">Borrow Book</p>          
         </Button>}
+         <div className="flex mt-5 flex-col gap-2">
+          <h2 className="text-left font-IBM-Plex font-bold text-3xl ">Summary</h2>
+        <p className="book-description text-justify">{description}</p>
+        </div>
       </div>
       <div className="relative flex flex-1 justify-center ">
         <div className="relative">

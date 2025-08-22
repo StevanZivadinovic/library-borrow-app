@@ -52,7 +52,7 @@ const BookForm = ({ type, ...book }: Props) => {
     if (result.success) {
       toast("Book created successfully");
 
-      router.push(`/admin/books/${result?.data?.id}`);
+      router.push(`/admin/books`);
     } else {
       toast("Error creating book: " + result.message)
        
@@ -272,7 +272,7 @@ const BookForm = ({ type, ...book }: Props) => {
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1">
               <FormLabel className="text-base font-normal text-dark-500 text-[var(--admin-basic-black)]">
-                Book Summary
+                Book Description
               </FormLabel>
               <FormControl>
                 <Textarea

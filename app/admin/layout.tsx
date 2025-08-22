@@ -10,7 +10,6 @@ import  Header  from "@/components/admin/Header";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   const session = await auth();
-console.log("Session in admin layout:", session);
   if (!session?.user?.id) redirect("/log-in");
 
 //   const isAdmin = await db

@@ -1,5 +1,5 @@
 {
-  "id": "485cab8b-2b52-4e95-bee4-4987ea38776b",
+  "id": "42c37997-394d-452a-a4e5-b1c1d23dc8e4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -48,6 +48,12 @@
         "cover_color": {
           "name": "cover_color",
           "type": "varchar(7)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },

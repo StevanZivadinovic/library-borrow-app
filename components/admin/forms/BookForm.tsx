@@ -41,6 +41,7 @@ const BookForm = ({ type, ...book }: Props) => {
       coverColor: "",
       // videoUrl: "",
       summary: "",
+      description: ""
     },
   });
 
@@ -241,6 +242,33 @@ const BookForm = ({ type, ...book }: Props) => {
         <FormField
           control={form.control}
           name={"summary"}
+          render={({ field }) => (
+            <FormItem className="flex flex-col gap-1">
+              <FormLabel className="text-base font-normal text-dark-500 text-[var(--admin-basic-black)]">
+                Book Summary
+              </FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Book summary"
+                  {...field}
+                  rows={5}
+                  className="
+                  caret-black text-[var(--admin-basic-black)]
+                min-h-12 border border-gray-100 
+                bg-[var(--admin-book-form-input-bg)]
+                p-4 text-base font-semibold placeholder:font-normal
+                placeholder:text-[var(--admin-book-form-placeholder)] !important"
+                />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+         <FormField
+          control={form.control}
+          name={"description"}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1">
               <FormLabel className="text-base font-normal text-dark-500 text-[var(--admin-basic-black)]">

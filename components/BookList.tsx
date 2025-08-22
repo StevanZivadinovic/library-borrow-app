@@ -2,7 +2,7 @@ import React from "react";
 import { BookCard } from "./BookCard";
 
 const BookList = ({ title, books, containerClassName, showTitle,bookWidth,bookBorrowedStyle,isMyProfile }: bookListType) => {
-  
+  console.log("BookList component rendered with books:", books);
     return (
     <section className="w-full">
      {showTitle && <h2 className="font-bebas text-4xl text-light-100 mt-20 text-left">
@@ -13,7 +13,7 @@ const BookList = ({ title, books, containerClassName, showTitle,bookWidth,bookBo
     className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 ${containerClassName}`}
   >
     {books.map((book) => (
-      <BookCard isMyProfile={isMyProfile} book={book} key={book?.id} {...book} bookWidth={bookWidth} bookBorrowedStyle={bookBorrowedStyle}/>
+      <BookCard isMyProfile={isMyProfile} book={Array.isArray(book) ? book[0] :book} key={Array.isArray(book) ? book[0]?.id : book?.id} {...book} bookWidth={bookWidth} bookBorrowedStyle={bookBorrowedStyle}/>
     ))}
   </div>
 </div>

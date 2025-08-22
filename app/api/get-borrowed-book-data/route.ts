@@ -14,18 +14,17 @@ export async function GET(req: Request) {
 
   try {
      const { searchParams } = new URL(req.url);
-    const bookID = searchParams.get("bookID");
-
-    if (!bookID) {
+    const borrowbookID = searchParams.get("bookID");
+console.log("Received bookID:", borrowbookID);
+    if (!borrowbookID) {
       return new Response("Missing bookID", { status: 400 });
     }
 
-    // const bookID = req.body ? req.body.bookID;
-    console.log("Book ID:", borrowRecords.id);
+    console.log("Book ID:", books.id);
        const res= await db
                      .select()
-                     .from(borrowRecords)
-                     .where(eq(borrowRecords.id, bookID))
+                     .from(books)
+                     .where(eq(books.id, borrowbookID))
                      .limit(1);
                      console.log("Book Details:", res);
       if (!res || res.length === 0) {
@@ -35,6 +34,7 @@ export async function GET(req: Request) {
       return new Response(JSON.stringify(res), {status: 200})
   }catch(error){
         console.error("Error fetching books:", error);
-        return new Response("Internal Server Error", { status: 500 });
+        return new Response(JSON.stringify({ error: "Internal Server Error" }), { status: 500 });
+
   }
 }

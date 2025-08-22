@@ -2,39 +2,39 @@
 import { useEffect, useState } from "react";
 import BookList from '@/components/BookList'
 import { fetchBorrowedBooks } from "@/lib/actions/getBorrowedBooks";
-import { db } from "@/database/drizzle";
-import { books } from "@/database/schema";
-import { eq } from "drizzle-orm";
 import { fetchBorrowedBooksDetails } from "@/lib/actions/getBorrowedBooksDetails";
+import { InferSelectModel } from "drizzle-orm";
+import { borrowRecords } from "@/database/schema";
 
 
 
 const MyProfilePage = () => {
-    const [booksData, setBooksData]=useState<BookType[]>([]);
+    const [booksBorrowData, setBorrowBooksData]=useState<InferSelectModel<typeof borrowRecords>[]>([]);
   const [bookDetails, setBookDetails] = useState<BookType[]>([]);
   
     useEffect(() => {
-      fetchBorrowedBooks(setBooksData);
-      console.log('Books data fetched:', booksData);
+      fetchBorrowedBooks(setBorrowBooksData);
        }, []);
 
        useEffect(() => {
-        booksData.length > 0 && booksData.forEach(async (book) => {
-         try{
-       const bookData= await  fetchBorrowedBooksDetails(setBookDetails, book);
-          console.log("Book Details:", bookData);
-         }catch(error){
-          console.error("Error fetching book details:", error);
-         }    
-        })
-       },[booksData])
+  if (booksBorrowData.length > 0) {
+    const fetchDetails = async () => {
+      try {
+        const details = await Promise.all(
+          booksBorrowData.map((book) => fetchBorrowedBooksDetails(book))
+        );
+        setBookDetails(details); 
+        console.log("All book details fetched:", details);
+      } catch (error) {
+        console.error("Error fetching book details:", error);
+      }
+    };
 
-    useEffect(() => {
-        if (bookDetails.length > 0) {
-          console.log("Book details updated:", bookDetails);
-        }
-    }, [bookDetails]);
-  
+    fetchDetails();
+  }
+}, [booksBorrowData]);
+
+   
        return (
     <div className='flex justify-between w-[80%] mx-auto'>
       <div className="profile_data flex-1">

@@ -1,17 +1,16 @@
 import { db } from "@/database/drizzle";
-import { books } from "@/database/schema";
-import { eq } from "drizzle-orm";
+import { books, borrowRecords } from "@/database/schema";
+import { eq, InferSelectModel } from "drizzle-orm";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
 export const fetchBorrowedBooksDetails = async (
-  setBookDetails: Dispatch<SetStateAction<BookType[]>>,
-  book: BookType
+  // setBookDetails: Dispatch<SetStateAction<BookType[]>>,
+  book: InferSelectModel<typeof borrowRecords>
 ) => {
-  try {
-    console.log("Fetching book details for:", book.id);
+    try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/get-borrowed-book-data?bookID=${book.id}`,
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/get-borrowed-book-data?bookID=${book.bookId}`,
       {
         method: "GET",
         headers: {
@@ -21,8 +20,8 @@ export const fetchBorrowedBooksDetails = async (
       }
     );
     const booksData = await res.json();
-    console.log("Fetched book details:", booksData);
-    setBookDetails(prev => [...prev, booksData]);
+    return booksData;
+
   } catch (error) {
     console.error("Error fetching books:", error);
     toast("Failed to load books. Please try again.");

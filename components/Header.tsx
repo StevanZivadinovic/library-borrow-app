@@ -18,7 +18,7 @@ export const Header = () => {
     <header className="my-10 flex justify-between gap-5">
       <Link href="/" className="text-2xl font-bold flex text-white">
         <Image
-          src={"./icons/logo.svg"}
+          src={"/icons/logo.svg"}
           alt="logo"
           width={40}
           height={40}

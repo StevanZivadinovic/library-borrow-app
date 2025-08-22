@@ -56,7 +56,7 @@ let recordValue:any;
                 <span className="font-semibold text-light-200 text-[var(--basic-cream)]">{genre} </span>
             </p>
             <div className="flex flex-row gap-1">
-                <Image alt="star" src={'./icons/star.svg'} width={20} height={20}/>
+                <Image alt="star" src={'/icons/star.svg'} width={20} height={20} />
                 <span className="font-semibold text-light-200 text-[var(--basic-cream)]">{rating}</span> /5
             </div>
         </div>
@@ -70,7 +70,7 @@ let recordValue:any;
         </div>
         <p className="book-description text-justify">{summary}</p>
         {data?.user &&<Button onClick={handleSubmit} className="book-overview-btn cursor-pointer bg-[var(--basic-cream)] mt-5 w-50" variant="secondary">          
-            <Image src={'./icons/book.svg'} alt="book" width={20} height={20}/>
+            <Image src={'/icons/book.svg'} alt="book" width={20} height={20}/>
              <p className="font-bebas text-sm font-bold uppercase">Borrow Book</p>          
         </Button>}
       </div>
